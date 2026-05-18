@@ -4,22 +4,42 @@ A collection of Claude Code skills — reusable agent capabilities that extend w
 
 ## What are skills?
 
-Skills are installable extensions for [Claude Code](https://claude.ai/code) that add specialized commands and behaviors. Each skill lives in its own directory and can be shared and installed by others.
+Skills are installable extensions for [Claude Code](https://claude.ai/code) that add specialized commands and behaviors. Each skill lives in its own directory and can be invoked explicitly via a slash command.
 
-## Skills in this repo
+## Skills
 
-<!-- Skills will be listed here as they are added -->
+### tmux-handoff
+
+Spin up a parallel Claude Code session in a new tmux pane or window, with its own git worktree and a focused handoff document as context. Useful for splitting off work mid-session — move files, target a specific base branch, and keep both sessions unblocked.
+
+**Invoke with:** `/tmux-handoff <prompt>`
+
+**Examples:**
+```
+/tmux-handoff work on the auth refactor from main
+/tmux-handoff move src/utils/parser.py from main
+/tmux-handoff feat/hotfix move api/rate_limit.py from main new window
+```
 
 ## Installation
 
-To install a skill from this repo, run the following in Claude Code:
+Install all skills from this repo:
 
-```
-/find-skills <skill-name>
+```bash
+npx skills add luboszk/skills
 ```
 
-Or install directly from the skill's directory.
+Install a specific skill:
+
+```bash
+npx skills add luboszk/skills/tmux-handoff
+```
+
+## Requirements
+
+- [Claude Code](https://claude.ai/code)
+- [Node.js](https://nodejs.org) (for `npx skills`)
 
 ## Contributing
 
-Each skill lives in its own subdirectory. See individual skill directories for documentation.
+Each skill lives in its own subdirectory with a `SKILL.md` and any supporting scripts. PRs welcome.
