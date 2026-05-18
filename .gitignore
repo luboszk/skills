@@ -28,6 +28,11 @@ node_modules/
 
 # Claude Code local settings
 .claude/settings.local.json
+.claude/handoff.md
+.claude/worktrees/
+
+# Skill eval artifacts
+tmux-handoff-workspace/
 
 # Environment files
 .env

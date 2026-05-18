@@ -1,0 +1,50 @@
+{
+  "skill_name": "tmux-handoff",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/tmux-handoff I want to refactor the auth module from master — it's getting too big and needs splitting into separate files for login, session, and token management",
+      "expected_output": "Skill creates a worktree from master with a slugified branch name, opens a vertical pane split, writes a focused handoff doc covering the auth refactor goal, and launches claude with that doc. No files moved.",
+      "files": [],
+      "expectations": [
+        "git worktree add was run with master or main as the target ref",
+        "branch name is a slug derived from the prompt (e.g. contains 'auth' and 'refactor')",
+        "worktree path contains .claude/worktrees/",
+        "a handoff document was written (non-empty)",
+        "handoff document mentions the auth module refactor goal",
+        "handoff document is focused — under 40 lines with no irrelevant context",
+        "tmux pane split command was generated (split-window), not a new window",
+        "claude launch command references the handoff document content"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/tmux-handoff move src/utils/legacy_parser.py to a new window — I realized this fix belongs on main not on my feature branch",
+      "expected_output": "Skill creates a worktree from current HEAD, opens a new tmux window, copies legacy_parser.py to the destination worktree, resets/deletes it from source, writes a focused handoff doc, and launches claude.",
+      "files": [],
+      "expectations": [
+        "tmux new-window command was generated (not split-window)",
+        "src/utils/legacy_parser.py was copied to the destination worktree",
+        "src/utils/legacy_parser.py was reset or deleted in the source worktree",
+        "worktree path contains .claude/worktrees/",
+        "git worktree add was run without a specific target ref (defaults to HEAD)",
+        "a handoff document was written and references the parser file",
+        "claude launch command references the handoff document"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/tmux-handoff feat/hotfix-rate-limiting — there's a rate limiting bug in production, move the patch from api/middleware/rate_limit.py, branch from main",
+      "expected_output": "Skill uses the explicit branch name 'feat/hotfix-rate-limiting', creates worktree from main, moves rate_limit.py (FIX version to destination, BUG version restored in source), opens default pane split, writes focused handoff doc about the rate limiting hotfix.",
+      "files": [],
+      "expectations": [
+        "branch name is exactly feat/hotfix-rate-limiting",
+        "git worktree add was run with main as the target ref",
+        "destination file contains the FIX version (references 'requests_this_minute' or 'reset')",
+        "source file contains the BUG version (references 'counter never resets' or just returns True)",
+        "tmux pane split command generated (split-window), not a new window",
+        "handoff document mentions rate limiting, production bug, and that the fix is uncommitted"
+      ]
+    }
+  ]
+}
